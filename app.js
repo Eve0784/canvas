@@ -89,15 +89,30 @@ const ctx = myCanvas.getContext('2d');
 const rectangles = [];
 
 function setup() {
-    for (let i = 0; i < 100; i++) {
-        const randomX = Math.random() * myCanvas.width;
-        const randomY = Math.random() * myCanvas.height;
+    for (let i = 0; i < 1000; i++) {
+
+        const red = Math.round(Math.random() * 255);
+        const green = Math.round(Math.random() * 255);
+        const blue = Math.round(Math.random() * 255);
+        const alpha = Math.random();
+
+        const width = 3;
+        const height = 3;
+
+        const randomX = Math.random() * (myCanvas.width - width);
+        const randomY = Math.random() * (myCanvas.height - height);
+
+        const randomVX = Math.random() * 4 - 2; // velocita orizzontale tra 0 e 4
+        const randomVY = Math.random() * 4 - 2; // velocita verticale tra 0 e 4
 
         const rect = {
-            x : randomX,
-            y : randomY,
-            width : 10,
-            height : 10
+            x: 400,
+            y: 400,
+            width: width,
+            height: height,
+            color: 'rgba(' + red + ',' + green + ',' + blue + ',' + alpha + ')',
+            vX: randomVX,
+            vY: randomVY
         }
         rectangles.push(rect);
     }
@@ -108,16 +123,55 @@ console.log(rectangles);
 
 function update() {
     for (const rect of rectangles) {
-        rect.x += 1;
+        rect.x += rect.vX;
+        rect.y += rect.vY;
+
+        if (rect.x + rect.width > myCanvas.width || rect.x < 0) {
+            rect.vX *= -1;
+        }
+        if (rect.y + rect.height > myCanvas.height || rect.y < 0) {
+            rect.vY *= -1;
+        }
+        const diceX = Math.random();
+        const diceY = Math.random();
+
+        if (diceX > 0.8) {
+            rect.vX += Math.random() * 3;
+        }
+        if (diceX < 0.2) {
+            rect.vX -= Math.random() * 3;
+        }       
+        if (diceY > 0.8) {
+            rect.vY += Math.random() * 3;
+        }
+        if (diceY < 0.2) {
+            rect.vY -= Math.random() * 3;
+        }
+        if (rect.vX > 3) {
+            rect.vX = 3;
+        }
+        if (rect.vX < -3) {
+            rect.vX = -3;
+        }
+        if (rect.vY > 3) {
+            rect.vY = 3;
+        }
+        if (rect.vY < -3) {
+            rect.vY = -3;
+        }
     }
 }
 function draw() {
-    ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+    //ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+    ctx.fillRect(0, 0, myCanvas.width, myCanvas.height);
+
     for (const rect of rectangles) {
+        ctx.fillStyle = rect.color;
         ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
     }
 }
 setInterval(() => {
     update();
     draw();
-}, 100);
+}, 18);
