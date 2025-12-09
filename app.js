@@ -41,29 +41,83 @@ const ctx = myCanvas.getContext('2d');
 // }
 
 //------------------------------- disegna un rettangolo ogni secondo-----------------------------//
+// setInterval(() => {
+//     //------------ pulisce il canvas prima di disegnare un nuovo rettangolo----------------//
+//     // ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+
+//     //------------ altro modo per pulire il canvas----------------//
+//     // ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+//     // ctx.fillRect(0, 0, myCanvas.width, myCanvas.height);
+
+//     //------------------ dimensioni random del rettangolo------------------//
+//     const randomWidth = Math.random()*myCanvas.width/2;
+//     const randomHeight = Math.random()*myCanvas.height/2;
+
+//     //------------------ disegna un rettangolo a random ogni secondo e toglie la larghezza e altezza-------//
+//     //  creata in precedenza per far cosi che non partano dal basso ma in senso veramente randomico--------//
+//     const randomX = Math.random()*(myCanvas.width - randomWidth);
+//     const randomY = Math.random()* (myCanvas.height - randomHeight);
+
+//     //------------------ colori a random rgb------------------------------//
+//     const red = Math.round(Math.random()*255);
+//     const green = Math.round(Math.random()*255);
+//     const blue = Math.round(Math.random()*255);
+//     const alpha = Math.random();
+//     ctx.fillStyle = 'rgba('+ red + ',' + green + ',' + blue + ',' + alpha + ')';
+
+//     ctx.fillRect(randomX, randomY, randomWidth, randomHeight);
+// },300);
+
+// const rettangolo = {
+//     x: 400,
+//     y: 400,
+//     width: 10,
+//     height: 10
+// }
+
+// setInterval(() => {
+//     ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+//     rettangolo.x += 2; // va a destra e col meno 1 va a sinistra se si mette +2 cambia velocita con rispetto a 'y'
+//     rettangolo.y -= 1; // va in giu e col meno 1 va in su
+//     ctx.fillRect(rettangolo.x, rettangolo.y, rettangolo.width, rettangolo.height);
+
+// }, 10);
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                       le 3 funzioni principali di un gioco: setup, update, draw                      //
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+const rectangles = [];
+
+function setup() {
+    for (let i = 0; i < 100; i++) {
+        const randomX = Math.random() * myCanvas.width;
+        const randomY = Math.random() * myCanvas.height;
+
+        const rect = {
+            x : randomX,
+            y : randomY,
+            width : 10,
+            height : 10
+        }
+        rectangles.push(rect);
+    }
+
+}
+setup();
+console.log(rectangles);
+
+function update() {
+    for (const rect of rectangles) {
+        rect.x += 1;
+    }
+}
+function draw() {
+    ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+    for (const rect of rectangles) {
+        ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+    }
+}
 setInterval(() => {
-    //------------ pulisce il canvas prima di disegnare un nuovo rettangolo----------------//
-    // ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-
-    //------------ altro modo per pulire il canvas----------------//
-    // ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-    // ctx.fillRect(0, 0, myCanvas.width, myCanvas.height);
-
-    //------------------ dimensioni random del rettangolo------------------//
-    const randomWidth = Math.random()*myCanvas.width/2;
-    const randomHeight = Math.random()*myCanvas.height/2;
-
-    //------------------ disegna un rettangolo a random ogni secondo e toglie la larghezza e altezza-------//
-    //  creata in precedenza per far cosi che non partano dal basso ma in senso veramente randomico--------//
-    const randomX = Math.random()*(myCanvas.width - randomWidth);
-    const randomY = Math.random()* (myCanvas.height - randomHeight);
-
-    //------------------ colori a random rgb------------------------------//
-    const red = Math.round(Math.random()*255);
-    const green = Math.round(Math.random()*255);
-    const blue = Math.round(Math.random()*255);
-    const alpha = Math.random();
-    ctx.fillStyle = 'rgba('+ red + ',' + green + ',' + blue + ',' + alpha + ')';
-
-    ctx.fillRect(randomX, randomY, randomWidth, randomHeight);
-},300);
+    update();
+    draw();
+}, 100);
