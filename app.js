@@ -178,3 +178,6 @@ setInterval(() => {
     update();
     draw();
 }, 18);
+
+
+// usare p5.js per fare gli esercizi ---> getstarted
