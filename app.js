@@ -126,12 +126,14 @@ function update() {
         rect.x += rect.vX;
         rect.y += rect.vY;
 
+        //cambio di direzione quando tocca i bordi
         if (rect.x + rect.width > myCanvas.width || rect.x < 0) {
             rect.vX *= -1;
         }
         if (rect.y + rect.height > myCanvas.height || rect.y < 0) {
             rect.vY *= -1;
         }
+        // variazione casuale della velocita
         const diceX = Math.random();
         const diceY = Math.random();
 
@@ -147,6 +149,7 @@ function update() {
         if (diceY < 0.2) {
             rect.vY -= Math.random() * 3;
         }
+        //limite massimo velocita
         if (rect.vX > 3) {
             rect.vX = 3;
         }
